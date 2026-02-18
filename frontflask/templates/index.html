@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuarios</title>
+
+</head>
+<body>
+    
+    <h1>Lista de usuarios</h1>
+
+    <form action="/crear" method="POST">
+        <h3>ID:</h3>
+        <input type="number" name="id" required>
+
+        <h3>Nombre:</h3>
+        <input type="text" name="nombre" required>
+
+        <h3>Edad:</h3>
+        <input type="number" name="edad" required>
+
+        <br><br>
+        <button type="submit">Agregar Usuario</button>
+    </form>
+
+
+    <table >
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Edad</th>
+            <th>Acción</th>
+        </tr>
+
+        {% for usuario in usuarios %}
+        <tr>
+            <td>{{ usuario.id }}</td>
+            <td>{{ usuario.nombre }}</td>
+            <td>{{ usuario.edad }}</td>
+            <td>
+                <a href="{{ url_for('eliminar_usuario', id=usuario.id) }}">
+                    Eliminar
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</body>
+</html>
+

@@ -2,6 +2,7 @@
 from typing import Optional
 from fastapi import FastAPI, status, HTTPException
 import asyncio
+from pydantic import BaseModel, Field
 
 #inicialización
 app= FastAPI(
@@ -15,6 +16,13 @@ usuarios=[
     {"id":2, "nombre":"Raquel", "edad":44},
     {"id":3, "nombre":"Juana", "edad":33},
 ]
+
+#modelo de validacion pydantic
+class UsuarioBase(BaseModel):
+    id:int = Field(...,gt=0, description="Identificador de usuario", example="1")
+    nombre:str = Field(...,min_length=3, max_length=50, description="Nombre del usuario")
+    edad:int = Field(...,ge=0, le=121, description="Edad validad entre 0 y 121")
+
 
 #endpoints
 @app.get("/", tags=['Inicio'])
@@ -56,9 +64,9 @@ async def consultausuarios():
     }
     
 @app.post("/v1/usuarios/", tags=['CRUD Usuarios'])
-async def agregar_usuarios(usuario:dict):
+async def agregar_usuarios(usuario:UsuarioBase):
     for usr in usuarios:
-        if usr["id"]== usuario.get("id"):
+        if usr["id"]== usuario.id:
             raise HTTPException(
                 status_code=400,
                 detail="El ID ya existe"
