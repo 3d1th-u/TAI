@@ -1,0 +1,8 @@
+services:
+  api:
+    build: .
+    container_name: server_Biblioteca
+    ports:
+      - "5002:5002"
+    volumes: 
+      - ./app_biblioteca:/app/app_biblioteca
